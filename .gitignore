@@ -1,0 +1,33 @@
+# Binary
+/btd
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# Go
+*.test
+*.test.exe
+*.out
+/vendor/
+
+# Env
+.env
+.env.local
+
+# Tomo workspace
+.tomo/
+
+# Harness config (generated, never committed)
+.opencode/
+.claude/
+.agents/
+.codex/
+.aider*

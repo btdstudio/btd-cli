@@ -12,7 +12,7 @@ func TestRunListOutput(t *testing.T) {
 	old := resolveInstalled
 	resolveInstalled = func(name string, tool manifest.Tool) string {
 		switch name {
-		case "goph":
+		case "kumi":
 			return "v0.1.0"
 		case "hachigo":
 			return "v0.0.9"
@@ -31,7 +31,7 @@ func TestRunListOutput(t *testing.T) {
 	}
 	out := buf.String()
 
-	for _, want := range []string{"goph", "hachigo", "tomo", "ok", "mismatch", "missing", "v0.0.9"} {
+	for _, want := range []string{"kumi", "hachigo", "tomo", "ok", "mismatch", "missing", "v0.0.9"} {
 		if !strings.Contains(out, want) {
 			t.Fatalf("output missing %q:\n%s", want, out)
 		}

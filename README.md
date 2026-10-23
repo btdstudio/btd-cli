@@ -5,7 +5,7 @@ Go CLI (Cobra) that ties three sibling tools into one product:
 
 | Tool | Purpose |
 |------|---------|
-| [goph](https://github.com/btdstudio/goph) | Scaffold Go + HTMX projects |
+| [kumi](https://github.com/btdstudio/kumi) | Scaffold Go + HTMX projects |
 | [tomo](https://github.com/btdstudio/tomo) | Harness-agnostic AI SDD loop |
 | [hachigo](https://github.com/btdstudio/hachigo) | Static site generator |
 
@@ -25,7 +25,7 @@ Requires Go 1.24+. Until the first tagged release, build from source: `go build 
 
 ```
 btd new <template> <name> [module-path] [--include tomo,hachigo]
-btd install <goph|tomo|hachigo|all> [--provider <ids>] [--yes]
+btd install <kumi|tomo|hachigo|all> [--provider <ids>] [--yes]
 btd update [--check]
 btd doctor [--install]
 btd list | ls
@@ -33,11 +33,11 @@ btd list | ls
 
 ### `btd new`
 
-Scaffold a project with goph and optionally include tomo and/or hachigo:
+Scaffold a project with kumi and optionally include tomo and/or hachigo:
 
 ```bash
-btd new goph my-app                          # goph only
-btd new goph my-app --include tomo,hachigo   # + SDD loop + static site
+btd new kumi my-app                          # kumi only
+btd new kumi my-app --include tomo,hachigo   # + SDD loop + static site
 ```
 
 `btd new` seeds a `.btd/manifest.json` (the project pin) and, with `--include tomo`, appends
@@ -47,7 +47,7 @@ btd new goph my-app --include tomo,hachigo   # + SDD loop + static site
 
 Installs the sibling tools, pinned by the manifest. Install location is **context-aware**:
 
-| Context | `tomo` | `hachigo` | `goph` |
+| Context | `tomo` | `hachigo` | `kumi` |
 |---------|--------|-----------|--------|
 | Inside a btd project | per-project (`install.js --project <root>`) | `hachigo init <site-dir>` | global |
 | Outside a btd project | global (clone + `install.js --global`) | global (`go install`) | global (`go install`) |
@@ -67,8 +67,8 @@ changed. `--check` prints what would change without applying. Pins never move bl
 
 ### `btd doctor`
 
-Checks `go`, `git`, `node` (≥20), `goph`, `hachigo`, and goph's prerequisites (`templ`, `air`,
-`goose`). `--install` installs what it can and delegates the rest to `goph doctor --install`.
+Checks `go`, `git`, `node` (≥20), `kumi`, `hachigo`, and kumi's prerequisites (`templ`, `air`,
+`goose`). `--install` installs what it can and delegates the rest to `kumi doctor --install`.
 
 ### `btd list`
 

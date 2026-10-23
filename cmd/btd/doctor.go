@@ -18,9 +18,9 @@ var doctorInstall bool
 var doctorCmd = &cobra.Command{
 	Use:   "doctor",
 	Short: "Check the btdstudio toolchain for missing or unhealthy tools",
-	Long: `Check that btd and the tools it coordinates (goph, tomo, hachigo) and
+	Long: `Check that btd and the tools it coordinates (kumi, tomo, hachigo) and
 their prerequisites are installed. With --install, btd installs the tools it
-can and delegates the rest to goph doctor --install.`,
+can and delegates the rest to kumi doctor --install.`,
 	RunE: func(cmd *cobra.Command, args []string) error {
 		return runDoctor(cmd)
 	},
@@ -44,7 +44,7 @@ func runDoctor(cmd *cobra.Command) error {
 		checkBinary("go"),
 		checkBinary("git"),
 		checkNode(),
-		checkBinary("goph"),
+		checkBinary("kumi"),
 		checkBinary("hachigo"),
 		checkBinary("templ"),
 		checkBinary("air"),
@@ -62,11 +62,11 @@ func runDoctor(cmd *cobra.Command) error {
 		return nil
 	}
 
-	// goph/hachigo install via the manifest; templ/air/goose delegate to
-	// goph doctor --install. go/git/node are system prerequisites btd cannot
+	// kumi/hachigo install via the manifest; templ/air/goose delegate to
+	// kumi doctor --install. go/git/node are system prerequisites btd cannot
 	// install, so they are reported but left to the user.
 	if !checks[3].ok {
-		if err := installTool(out, "goph"); err != nil {
+		if err := installTool(out, "kumi"); err != nil {
 			return err
 		}
 	}
@@ -76,8 +76,8 @@ func runDoctor(cmd *cobra.Command) error {
 		}
 	}
 	if !checks[5].ok || !checks[6].ok || !checks[7].ok {
-		if err := exec.Command("goph", "doctor", "--install").Run(); err != nil {
-			return fmt.Errorf("goph doctor --install: %w", err)
+		if err := exec.Command("kumi", "doctor", "--install").Run(); err != nil {
+			return fmt.Errorf("kumi doctor --install: %w", err)
 		}
 	}
 	return nil

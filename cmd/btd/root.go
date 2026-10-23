@@ -13,8 +13,8 @@ var Version = "dev"
 
 var rootCmd = &cobra.Command{
 	Use:   "btd",
-	Short: "Orchestrate the btdstudio toolchain (goph, tomo, hachigo)",
-	Long: `btd is a thin CLI that coordinates the btdstudio toolchain — goph,
+	Short: "Orchestrate the btdstudio toolchain (kumi, tomo, hachigo)",
+	Long: `btd is a thin CLI that coordinates the btdstudio toolchain — kumi,
 tomo, and hachigo — by wrapping their existing CLIs and install flows.
 
 It holds no templates and no tool logic; every operation shells out to

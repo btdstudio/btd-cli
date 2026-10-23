@@ -1,4 +1,4 @@
-// Package new implements `btd new`: scaffold a project with goph and
+// Package new implements `btd new`: scaffold a project with kumi and
 // optionally include tomo and hachigo.
 package new
 
@@ -11,7 +11,7 @@ import (
 
 // Options carries the parameters for `btd new`.
 type Options struct {
-	Template   string   // v1: "goph"
+	Template   string   // v1: "kumi"
 	Name       string   // directory name (and default module path)
 	ModulePath string   // optional module path override
 	Include    []string // subset of {"tomo", "hachigo"}
@@ -20,7 +20,7 @@ type Options struct {
 	CacheDir   string   // tomo clone cache ("" = XDG default)
 }
 
-// Run scaffolds a new project: ensure goph, run `goph new`, seed the project
+// Run scaffolds a new project: ensure kumi, run `kumi new`, seed the project
 // manifest, then apply any --include tools.
 func Run(r install.Runner, m *manifest.Manifest, o Options) error {
 	if err := ensureGoph(r, m); err != nil {
@@ -31,8 +31,8 @@ func Run(r install.Runner, m *manifest.Manifest, o Options) error {
 	if o.ModulePath != "" {
 		args = append(args, o.ModulePath)
 	}
-	if err := r.Run("", "goph", args...); err != nil {
-		return fmt.Errorf("goph new: %w", err)
+	if err := r.Run("", "kumi", args...); err != nil {
+		return fmt.Errorf("kumi new: %w", err)
 	}
 
 	if err := seedManifest(o.Name, m); err != nil {
@@ -56,10 +56,10 @@ func Run(r install.Runner, m *manifest.Manifest, o Options) error {
 	return nil
 }
 
-// ensureGoph installs goph if it is not already on PATH.
+// ensureGoph installs kumi if it is not already on PATH.
 func ensureGoph(r install.Runner, m *manifest.Manifest) error {
-	if _, err := install.LookPath("goph"); err == nil {
+	if _, err := install.LookPath("kumi"); err == nil {
 		return nil
 	}
-	return install.Install(r, m, "goph", install.Options{})
+	return install.Install(r, m, "kumi", install.Options{})
 }

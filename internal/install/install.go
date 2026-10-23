@@ -1,5 +1,5 @@
 // Package install implements btd's install strategies: the go and git kinds,
-// plus context-aware installers for goph, hachigo, and tomo.
+// plus context-aware installers for kumi, hachigo, and tomo.
 package install
 
 import (
@@ -47,7 +47,7 @@ type Strategy interface {
 
 // registry maps tool names to their install strategies.
 var registry = map[string]Strategy{
-	"goph":    goStrategy{},
+	"kumi":    goStrategy{},
 	"hachigo": hachigoStrategy{},
 	"tomo":    tomoStrategy{},
 }
@@ -56,7 +56,7 @@ var registry = map[string]Strategy{
 func Install(r Runner, m *manifest.Manifest, tool string, o Options) error {
 	names := []string{tool}
 	if tool == "all" {
-		names = []string{"goph", "hachigo", "tomo"}
+		names = []string{"kumi", "hachigo", "tomo"}
 	}
 	for _, name := range names {
 		t, ok := m.Tools[name]
@@ -65,7 +65,7 @@ func Install(r Runner, m *manifest.Manifest, tool string, o Options) error {
 		}
 		s, ok := registry[name]
 		if !ok {
-			return fmt.Errorf("unknown tool %q (expected goph, tomo, hachigo, or all)", name)
+			return fmt.Errorf("unknown tool %q (expected kumi, tomo, hachigo, or all)", name)
 		}
 		if err := s.Install(r, t, o); err != nil {
 			return fmt.Errorf("install %s: %w", name, err)

@@ -45,11 +45,11 @@ func assertCalls(t *testing.T, got []recordedCall, want []recordedCall) {
 
 func TestInstallGophRunsGoInstall(t *testing.T) {
 	r := &fakeRunner{}
-	if err := Install(r, manifest.Default(), "goph", Options{}); err != nil {
+	if err := Install(r, manifest.Default(), "kumi", Options{}); err != nil {
 		t.Fatal(err)
 	}
 	assertCalls(t, r.calls, []recordedCall{
-		{name: "go", args: []string{"install", "github.com/btdstudio/goph/cmd/goph@v0.1.0"}},
+		{name: "go", args: []string{"install", "github.com/btdstudio/kumi/cmd/kumi@v0.1.0"}},
 	})
 }
 
@@ -144,7 +144,7 @@ func TestInstallAllRunsEveryTool(t *testing.T) {
 		t.Fatal(err)
 	}
 	assertCalls(t, r.calls, []recordedCall{
-		{name: "go", args: []string{"install", "github.com/btdstudio/goph/cmd/goph@v0.1.0"}},
+		{name: "go", args: []string{"install", "github.com/btdstudio/kumi/cmd/kumi@v0.1.0"}},
 		{name: "go", args: []string{"install", "github.com/btdstudio/hachigo/cmd/hachigo@v0.1.0"}},
 		{name: "git", args: []string{"clone", "--depth", "1", "--branch", "v0.1.0", "https://github.com/btdstudio/tomo.git", cache}},
 		{name: "node", args: []string{filepath.Join(cache, "scripts", "install.js"), "--global"}},

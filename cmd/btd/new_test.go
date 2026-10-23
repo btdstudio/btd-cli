@@ -58,7 +58,7 @@ func TestParseIncludes(t *testing.T) {
 func TestRunNewScaffoldsAndIncludes(t *testing.T) {
 	old := install.LookPath
 	install.LookPath = func(name string) (string, error) {
-		if name == "goph" || name == "hachigo" {
+		if name == "kumi" || name == "hachigo" {
 			return "/usr/bin/" + name, nil
 		}
 		return "", os.ErrNotExist
@@ -75,7 +75,7 @@ func TestRunNewScaffoldsAndIncludes(t *testing.T) {
 	cache := filepath.Join(tmp, "cache", "tomo")
 	r := &recRunner{}
 	o := newpkg.Options{
-		Template: "goph",
+		Template: "kumi",
 		Name:     "myapp",
 		Include:  []string{"tomo", "hachigo"},
 		Provider: "all",
@@ -86,7 +86,7 @@ func TestRunNewScaffoldsAndIncludes(t *testing.T) {
 	}
 
 	want := []recCall{
-		{name: "goph", args: []string{"new", "myapp"}},
+		{name: "kumi", args: []string{"new", "myapp"}},
 		{name: "git", args: []string{"clone", "--depth", "1", "--branch", "v0.1.0", "https://github.com/btdstudio/tomo.git", cache}},
 		{name: "node", args: []string{filepath.Join(cache, "scripts", "install.js"), "--project", "myapp", "--provider", "all"}},
 		{name: "hachigo", args: []string{"init", filepath.Join("myapp", "site")}},
@@ -128,7 +128,7 @@ func TestRunNewInstallsGophWhenMissing(t *testing.T) {
 	defer func() { _ = os.Chdir(oldWd) }()
 
 	r := &recRunner{}
-	if err := newpkg.Run(r, manifest.Default(), newpkg.Options{Template: "goph", Name: "myapp"}); err != nil {
+	if err := newpkg.Run(r, manifest.Default(), newpkg.Options{Template: "kumi", Name: "myapp"}); err != nil {
 		t.Fatal(err)
 	}
 	if len(r.calls) != 2 {
@@ -137,7 +137,7 @@ func TestRunNewInstallsGophWhenMissing(t *testing.T) {
 	if r.calls[0].name != "go" || r.calls[0].args[0] != "install" {
 		t.Fatalf("call 0 = %#v, want go install", r.calls[0])
 	}
-	if r.calls[1].name != "goph" || r.calls[1].args[0] != "new" {
-		t.Fatalf("call 1 = %#v, want goph new", r.calls[1])
+	if r.calls[1].name != "kumi" || r.calls[1].args[0] != "new" {
+		t.Fatalf("call 1 = %#v, want kumi new", r.calls[1])
 	}
 }

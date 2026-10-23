@@ -23,6 +23,6 @@ be published and you will be credited unless you prefer otherwise.
 In scope: the `btd` orchestrator CLI, its manifest handling, and its install /
 update / new flows.
 
-Out of scope: the tools btd wraps (goph, tomo, hachigo) — report issues in
+Out of scope: the tools btd wraps (kumi, tomo, hachigo) — report issues in
 those tools to their own repositories — and vulnerabilities in third-party
 dependencies with no impact on btd.

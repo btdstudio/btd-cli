@@ -19,14 +19,14 @@ func (f *fakeRunner) Run(dir, name string, args ...string) error {
 
 func TestPlanFindsChanges(t *testing.T) {
 	m := manifest.Default()
-	m.Tools["goph"] = manifest.Tool{Kind: manifest.KindGo, Path: "github.com/btdstudio/goph/cmd/goph", Version: "v0.0.1"}
+	m.Tools["kumi"] = manifest.Tool{Kind: manifest.KindGo, Path: "github.com/btdstudio/kumi/cmd/kumi", Version: "v0.0.1"}
 
 	changes := Plan(m)
 	if len(changes) != 1 {
 		t.Fatalf("got %d changes, want 1: %#v", len(changes), changes)
 	}
 	c := changes[0]
-	if c.Tool != "goph" || c.From != "v0.0.1" || c.To != "v0.1.0" {
+	if c.Tool != "kumi" || c.From != "v0.0.1" || c.To != "v0.1.0" {
 		t.Fatalf("change = %#v", c)
 	}
 }
@@ -43,7 +43,7 @@ func TestRunCheckIsDryRun(t *testing.T) {
 	gpath := filepath.Join(xdg, "btd", "manifest.json")
 	if err := manifest.WriteFile(gpath, &manifest.Manifest{
 		Tools: map[string]manifest.Tool{
-			"goph": {Kind: manifest.KindGo, Path: "github.com/btdstudio/goph/cmd/goph", Version: "v0.0.1"},
+			"kumi": {Kind: manifest.KindGo, Path: "github.com/btdstudio/kumi/cmd/kumi", Version: "v0.0.1"},
 		},
 	}); err != nil {
 		t.Fatal(err)
@@ -65,8 +65,8 @@ func TestRunCheckIsDryRun(t *testing.T) {
 		t.Fatalf("dry run should not install, got %#v", r.calls)
 	}
 	global, _ := manifest.ReadFile(gpath)
-	if global.Tools["goph"].Version != "v0.0.1" {
-		t.Fatalf("dry run mutated manifest: %+v", global.Tools["goph"])
+	if global.Tools["kumi"].Version != "v0.0.1" {
+		t.Fatalf("dry run mutated manifest: %+v", global.Tools["kumi"])
 	}
 }
 
@@ -76,7 +76,7 @@ func TestRunAppliesAndReinstalls(t *testing.T) {
 	gpath := filepath.Join(xdg, "btd", "manifest.json")
 	if err := manifest.WriteFile(gpath, &manifest.Manifest{
 		Tools: map[string]manifest.Tool{
-			"goph": {Kind: manifest.KindGo, Path: "github.com/btdstudio/goph/cmd/goph", Version: "v0.0.1"},
+			"kumi": {Kind: manifest.KindGo, Path: "github.com/btdstudio/kumi/cmd/kumi", Version: "v0.0.1"},
 		},
 	}); err != nil {
 		t.Fatal(err)
@@ -94,12 +94,12 @@ func TestRunAppliesAndReinstalls(t *testing.T) {
 	if len(changes) != 1 {
 		t.Fatalf("got %d changes, want 1", len(changes))
 	}
-	if len(r.calls) != 1 || r.calls[0] != "go install github.com/btdstudio/goph/cmd/goph@v0.1.0" {
+	if len(r.calls) != 1 || r.calls[0] != "go install github.com/btdstudio/kumi/cmd/kumi@v0.1.0" {
 		t.Fatalf("calls = %#v", r.calls)
 	}
 	global, _ := manifest.ReadFile(gpath)
-	if global.Tools["goph"].Version != "v0.1.0" {
-		t.Fatalf("manifest not updated: %+v", global.Tools["goph"])
+	if global.Tools["kumi"].Version != "v0.1.0" {
+		t.Fatalf("manifest not updated: %+v", global.Tools["kumi"])
 	}
 	if global.UpdatedAt == "" {
 		t.Fatal("updatedAt not set")

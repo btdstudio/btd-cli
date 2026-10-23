@@ -33,7 +33,7 @@ func runList(out io.Writer) error {
 		return err
 	}
 	fmt.Fprintf(out, "%-8s %-12s %-12s %s\n", "TOOL", "PIN", "INSTALLED", "STATUS")
-	for _, name := range []string{"goph", "hachigo", "tomo"} {
+	for _, name := range []string{"kumi", "hachigo", "tomo"} {
 		tool := m.Tools[name]
 		pin := pinOf(tool)
 		installed := resolveInstalled(name, tool)

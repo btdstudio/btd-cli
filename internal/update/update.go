@@ -10,7 +10,7 @@ import (
 )
 
 // ToolOrder is the canonical order tools are reported in.
-var ToolOrder = []string{"goph", "hachigo", "tomo"}
+var ToolOrder = []string{"kumi", "hachigo", "tomo"}
 
 // Change is one tool whose pin would move.
 type Change struct {

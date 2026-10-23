@@ -8,12 +8,12 @@ import (
 func TestMergePrecedence(t *testing.T) {
 	global := &Manifest{
 		Tools: map[string]Tool{
-			"goph": {Kind: KindGo, Path: "github.com/btdstudio/goph/cmd/goph", Version: "v0.2.0"},
+			"kumi": {Kind: KindGo, Path: "github.com/btdstudio/kumi/cmd/kumi", Version: "v0.2.0"},
 		},
 	}
 	project := &Manifest{
 		Tools: map[string]Tool{
-			"goph": {Version: "v0.3.0"},
+			"kumi": {Version: "v0.3.0"},
 		},
 	}
 
@@ -27,12 +27,12 @@ func TestMergePrecedence(t *testing.T) {
 	}
 
 	// Project version wins, but inherits kind/path from earlier layers.
-	goph := eff.Tools["goph"]
-	if goph.Version != "v0.3.0" {
-		t.Fatalf("goph.version = %q, want v0.3.0", goph.Version)
+	kumi := eff.Tools["kumi"]
+	if kumi.Version != "v0.3.0" {
+		t.Fatalf("kumi.version = %q, want v0.3.0", kumi.Version)
 	}
-	if goph.Kind != KindGo || goph.Path != "github.com/btdstudio/goph/cmd/goph" {
-		t.Fatalf("goph kind/path not inherited: %+v", goph)
+	if kumi.Kind != KindGo || kumi.Path != "github.com/btdstudio/kumi/cmd/kumi" {
+		t.Fatalf("kumi kind/path not inherited: %+v", kumi)
 	}
 
 	// Untouched tools inherit defaults.
@@ -46,14 +46,14 @@ func TestMergePrecedence(t *testing.T) {
 
 func TestMergeDoesNotMutateLayers(t *testing.T) {
 	def := Default()
-	proj := &Manifest{Tools: map[string]Tool{"goph": {Version: "v9.9.9"}}}
+	proj := &Manifest{Tools: map[string]Tool{"kumi": {Version: "v9.9.9"}}}
 	eff := Merge(def, proj)
 
-	if eff.Tools["goph"].Version != "v9.9.9" {
-		t.Fatalf("goph.version = %q, want v9.9.9", eff.Tools["goph"].Version)
+	if eff.Tools["kumi"].Version != "v9.9.9" {
+		t.Fatalf("kumi.version = %q, want v9.9.9", eff.Tools["kumi"].Version)
 	}
-	if def.Tools["goph"].Version != "v0.1.0" {
-		t.Fatalf("default mutated: goph.version = %q", def.Tools["goph"].Version)
+	if def.Tools["kumi"].Version != "v0.1.0" {
+		t.Fatalf("default mutated: kumi.version = %q", def.Tools["kumi"].Version)
 	}
 }
 
@@ -91,14 +91,14 @@ func TestLoadMergesGlobalAndProject(t *testing.T) {
 	xdg := t.TempDir()
 	t.Setenv("XDG_CONFIG_HOME", xdg)
 	if err := WriteFile(filepath.Join(xdg, "btd", "manifest.json"), &Manifest{
-		Tools: map[string]Tool{"goph": {Version: "v0.2.0"}},
+		Tools: map[string]Tool{"kumi": {Version: "v0.2.0"}},
 	}); err != nil {
 		t.Fatal(err)
 	}
 
 	proj := t.TempDir()
 	if err := WriteFile(ProjectPath(proj), &Manifest{
-		Tools: map[string]Tool{"goph": {Version: "v0.3.0"}},
+		Tools: map[string]Tool{"kumi": {Version: "v0.3.0"}},
 	}); err != nil {
 		t.Fatal(err)
 	}
@@ -107,8 +107,8 @@ func TestLoadMergesGlobalAndProject(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if eff.Tools["goph"].Version != "v0.3.0" {
-		t.Fatalf("goph.version = %q, want v0.3.0 (project wins)", eff.Tools["goph"].Version)
+	if eff.Tools["kumi"].Version != "v0.3.0" {
+		t.Fatalf("kumi.version = %q, want v0.3.0 (project wins)", eff.Tools["kumi"].Version)
 	}
 	if eff.Tools["tomo"].Ref != "v0.1.0" {
 		t.Fatalf("tomo.ref = %q, want v0.1.0 (default inherited)", eff.Tools["tomo"].Ref)

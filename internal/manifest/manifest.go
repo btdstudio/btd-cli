@@ -1,5 +1,5 @@
 // Package manifest models the btd manifest: the JSON file that pins the
-// sibling tools (goph, tomo, hachigo) to mutually-compatible versions. A
+// sibling tools (kumi, tomo, hachigo) to mutually-compatible versions. A
 // global manifest lives at ~/.config/btd/manifest.json; a project manifest at
 // <root>/.btd/manifest.json. Effective settings merge defaults ← global ←
 // project (project wins).
@@ -20,7 +20,7 @@ const (
 	KindGit = "git" // git clone/checkout <repo> at <ref>
 )
 
-// Manifest is the btd toolset pin. Tools is keyed by tool name ("goph",
+// Manifest is the btd toolset pin. Tools is keyed by tool name ("kumi",
 // "tomo", "hachigo").
 type Manifest struct {
 	SchemaVersion int             `json:"schemaVersion"`
@@ -46,7 +46,7 @@ func Default() *Manifest {
 		SchemaVersion: 1,
 		Compatible:    "btd-0.1.0",
 		Tools: map[string]Tool{
-			"goph":    {Kind: KindGo, Path: "github.com/btdstudio/goph/cmd/goph", Version: "v0.1.0"},
+			"kumi":    {Kind: KindGo, Path: "github.com/btdstudio/kumi/cmd/kumi", Version: "v0.1.0"},
 			"hachigo": {Kind: KindGo, Path: "github.com/btdstudio/hachigo/cmd/hachigo", Version: "v0.1.0"},
 			"tomo":    {Kind: KindGit, Repo: "https://github.com/btdstudio/tomo.git", Ref: "v0.1.0"},
 		},

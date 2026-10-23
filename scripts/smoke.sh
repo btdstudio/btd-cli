@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 # End-to-end smoke test for btd: build the binary, scaffold a project with
-# goph, apply the tomo/hachigo includes, and verify the result — all in a
+# kumi, apply the tomo/hachigo includes, and verify the result — all in a
 # throwaway directory.
 #
-# Prerequisites: go, git, node (>=20). goph is installed by `btd new` if
-# missing; goph's own prerequisites (templ, air, goose) must be present.
+# Prerequisites: go, git, node (>=20). kumi is installed by `btd new` if
+# missing; kumi's own prerequisites (templ, air, goose) must be present.
 
 set -euo pipefail
 
@@ -17,8 +17,8 @@ trap 'rm -rf "$BINDIR" "$WORK"' EXIT
 echo "==> building btd"
 go build -o "$BINDIR/btd" ./cmd/btd
 
-echo "==> btd new goph smokeapp --include tomo,hachigo"
-(cd "$WORK" && "$BINDIR/btd" new goph smokeapp --include tomo,hachigo)
+echo "==> btd new kumi smokeapp --include tomo,hachigo"
+(cd "$WORK" && "$BINDIR/btd" new kumi smokeapp --include tomo,hachigo)
 
 echo "==> verifying scaffold"
 test -d "$WORK/smokeapp"

@@ -20,9 +20,9 @@ var (
 var newCmd = &cobra.Command{
 	Use:   "new <template> <name> [module-path]",
 	Short: "Scaffold a new project",
-	Long: `Scaffold a new project with goph and optionally include tomo and hachigo.
+	Long: `Scaffold a new project with kumi and optionally include tomo and hachigo.
 
-goph new is non-interactive and fails if the target directory already exists.
+kumi new is non-interactive and fails if the target directory already exists.
 Inclusions install per-project, never globally.`,
 	Args: cobra.RangeArgs(2, 3),
 	RunE: func(cmd *cobra.Command, args []string) error {
@@ -44,8 +44,8 @@ func runNew(cmd *cobra.Command, args []string) error {
 	if len(args) == 3 {
 		modulePath = args[2]
 	}
-	if template != "goph" {
-		return fmt.Errorf("unsupported template %q (v1 supports only \"goph\")", template)
+	if template != "kumi" {
+		return fmt.Errorf("unsupported template %q (v1 supports only \"kumi\")", template)
 	}
 
 	includes, err := parseIncludes(newInclude)

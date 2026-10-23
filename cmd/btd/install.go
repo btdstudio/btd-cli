@@ -17,7 +17,7 @@ var (
 )
 
 var installCmd = &cobra.Command{
-	Use:   "install <goph|tomo|hachigo|all>",
+	Use:   "install <kumi|tomo|hachigo|all>",
 	Short: "Install a tool from the btdstudio toolchain",
 	Long: `Install a tool from the btdstudio toolchain, pinned by the manifest.
 
@@ -58,7 +58,7 @@ func runInstall(cmd *cobra.Command, tool string) error {
 	if !isProject && !installYes {
 		names := []string{tool}
 		if tool == "all" {
-			names = []string{"goph", "hachigo", "tomo"}
+			names = []string{"kumi", "hachigo", "tomo"}
 		}
 		if !install.Confirm(cmd.InOrStdin(), cmd.OutOrStdout(), m, names) {
 			fmt.Fprintln(cmd.OutOrStdout(), "Aborted.")

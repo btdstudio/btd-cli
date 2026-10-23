@@ -6,6 +6,7 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
+	"regexp"
 	"strings"
 
 	"github.com/spf13/cobra"
@@ -70,6 +71,16 @@ var resolveInstalled = func(name string, tool manifest.Tool) string {
 	}
 }
 
+// versionRe extracts a semver-like token ("v0.1.0", or a pseudo-version like
+// "v0.0.0-20261018…-sha+dirty") from a `--version` line such as
+// "kumi version v0.1.0".
+var versionRe = regexp.MustCompile(`v[0-9]+\.[0-9]+\.[0-9]+[^\s]*`)
+
+// extractVersion returns the version token from a version string, or "".
+func extractVersion(s string) string {
+	return versionRe.FindString(s)
+}
+
 func binaryVersion(name string) string {
 	path, err := exec.LookPath(name)
 	if err != nil {
@@ -79,7 +90,7 @@ func binaryVersion(name string) string {
 	if err != nil {
 		return ""
 	}
-	return firstLine(string(out))
+	return extractVersion(string(out))
 }
 
 func checkoutRef(cache string) string {

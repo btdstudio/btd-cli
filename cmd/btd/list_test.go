@@ -37,3 +37,20 @@ func TestRunListOutput(t *testing.T) {
 		}
 	}
 }
+
+func TestExtractVersion(t *testing.T) {
+	cases := map[string]string{
+		"kumi version v0.1.0":                      "v0.1.0",
+		"hachigo version v0.1.0":                   "v0.1.0",
+		"btd version v0.1.0":                       "v0.1.0",
+		"v0.1.0":                                   "v0.1.0",
+		"v0.0.0-20261018224129-9a7db308b624+dirty": "v0.0.0-20261018224129-9a7db308b624+dirty",
+		"":           "",
+		"no version": "",
+	}
+	for in, want := range cases {
+		if got := extractVersion(in); got != want {
+			t.Errorf("extractVersion(%q) = %q, want %q", in, got, want)
+		}
+	}
+}

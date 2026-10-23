@@ -74,5 +74,5 @@ func Install(r Runner, m *manifest.Manifest, tool string, o Options) error {
 	return nil
 }
 
-// lookPath reports whether name is on PATH; overridable in tests.
-var lookPath = exec.LookPath
+// LookPath reports whether name is on PATH; overridable in tests.
+var LookPath = exec.LookPath

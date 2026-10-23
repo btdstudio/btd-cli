@@ -64,9 +64,9 @@ func TestInstallHachigoGlobalRunsGoInstall(t *testing.T) {
 }
 
 func TestInstallHachigoProjectRunsInit(t *testing.T) {
-	old := lookPath
-	lookPath = func(string) (string, error) { return "/usr/bin/hachigo", nil }
-	defer func() { lookPath = old }()
+	old := LookPath
+	LookPath = func(string) (string, error) { return "/usr/bin/hachigo", nil }
+	defer func() { LookPath = old }()
 
 	r := &fakeRunner{}
 	o := Options{ProjectRoot: "/proj"}
@@ -79,9 +79,9 @@ func TestInstallHachigoProjectRunsInit(t *testing.T) {
 }
 
 func TestInstallHachigoProjectEnsuresBinary(t *testing.T) {
-	old := lookPath
-	lookPath = func(string) (string, error) { return "", os.ErrNotExist }
-	defer func() { lookPath = old }()
+	old := LookPath
+	LookPath = func(string) (string, error) { return "", os.ErrNotExist }
+	defer func() { LookPath = old }()
 
 	r := &fakeRunner{}
 	o := Options{ProjectRoot: "/proj", SiteDir: "web"}

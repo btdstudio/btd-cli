@@ -32,7 +32,7 @@ confirmation first (skip with --yes).`,
 }
 
 func init() {
-	installCmd.Flags().StringVar(&installProvider, "provider", "", "tomo harness selection (all|opencode|claude|copilot|antigravity|codex)")
+	installCmd.Flags().StringVar(&installProvider, "provider", "all", "tomo harness selection (all|opencode|claude|copilot|antigravity|codex)")
 	installCmd.Flags().BoolVarP(&installYes, "yes", "y", false, "skip the global-install confirmation prompt")
 	installCmd.Flags().StringVar(&installSiteDir, "site-dir", "", "hachigo site directory (default \"site\")")
 	rootCmd.AddCommand(installCmd)

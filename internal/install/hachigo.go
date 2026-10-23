@@ -14,7 +14,7 @@ func (hachigoStrategy) Install(r Runner, tool manifest.Tool, o Options) error {
 	if o.ProjectRoot == "" {
 		return goStrategy{}.Install(r, tool, o)
 	}
-	if _, err := lookPath("hachigo"); err != nil {
+	if _, err := LookPath("hachigo"); err != nil {
 		if err := (goStrategy{}).Install(r, tool, o); err != nil {
 			return err
 		}

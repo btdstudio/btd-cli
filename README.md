@@ -1,29 +1,92 @@
 # btd
 
 `btd` is the orchestrator for the [btdstudio](https://github.com/btdstudio) toolchain. It is a thin
-Go CLI (Cobra) that ties three sibling tools together into one product:
+Go CLI (Cobra) that ties three sibling tools into one product:
 
-| Tool | Purpose | Repo |
-|------|---------|------|
-| [goph](https://github.com/btdstudio/goph) | Scaffold Go + HTMX projects | `github.com/btdstudio/goph` |
-| [tomo](https://github.com/btdstudio/tomo) | Harness-agnostic AI SDD loop | `github.com/btdstudio/tomo` |
-| [hachigo](https://github.com/btdstudio/hachigo) | Static site generator | `github.com/btdstudio/hachigo` |
+| Tool | Purpose |
+|------|---------|
+| [goph](https://github.com/btdstudio/goph) | Scaffold Go + HTMX projects |
+| [tomo](https://github.com/btdstudio/tomo) | Harness-agnostic AI SDD loop |
+| [hachigo](https://github.com/btdstudio/hachigo) | Static site generator |
 
-`btd` is deliberately **not** a reimplementation of any tool — it shells out to their existing CLIs
-and install flows, holding no templates and no copied tool logic.
+`btd` is deliberately **not** a reimplementation of any tool — it shells out to each tool's existing
+CLI and install flow, holding no templates and no copied tool logic.
 
-## Status
+## Install
 
-Pre-1.0 and under active development. The CLI is not yet published; install instructions will land
-with the first release. Progress is tracked in the repository's SDD workspace (`.tomo/specs/`).
+```bash
+go install github.com/btdstudio/btd-cli/cmd/btd@latest
+export PATH="$PATH:$(go env GOPATH)/bin"
+```
 
-## Planned command surface
+Requires Go 1.24+. Until the first tagged release, build from source: `go build ./cmd/btd`.
 
-- `btd new <template> <name>` — scaffold a project (optionally `--include tomo,hachigo`)
-- `btd install <goph|tomo|hachigo|all>` — context-aware install of the sibling tools
-- `btd update [--check]` — keep the toolchain mutually compatible via a pinned manifest
-- `btd doctor [--install]` — check and repair required tooling
-- `btd list` — list installed tools and their versions
+## Usage
+
+```
+btd new <template> <name> [module-path] [--include tomo,hachigo]
+btd install <goph|tomo|hachigo|all> [--provider <ids>] [--yes]
+btd update [--check]
+btd doctor [--install]
+btd list | ls
+```
+
+### `btd new`
+
+Scaffold a project with goph and optionally include tomo and/or hachigo:
+
+```bash
+btd new goph my-app                          # goph only
+btd new goph my-app --include tomo,hachigo   # + SDD loop + static site
+```
+
+`btd new` seeds a `.btd/manifest.json` (the project pin) and, with `--include tomo`, appends
+`.tomo/` to the project's `.gitignore`. Inclusions install **per-project**, never globally.
+
+### `btd install`
+
+Installs the sibling tools, pinned by the manifest. Install location is **context-aware**:
+
+| Context | `tomo` | `hachigo` | `goph` |
+|---------|--------|-----------|--------|
+| Inside a btd project | per-project (`install.js --project <root>`) | `hachigo init <site-dir>` | global |
+| Outside a btd project | global (clone + `install.js --global`) | global (`go install`) | global (`go install`) |
+
+- **Inside a project** (a `.btd/manifest.json` is found up the tree), installs touch only the
+  project's own directories and never prompt.
+- **Outside a project**, installs are global, write to user-level directories (`GOPATH/bin`, harness
+  config), and prompt for confirmation first — skip with `--yes`.
+
+`--provider <ids>` selects tomo harnesses (`all | opencode | claude | copilot | antigravity | codex`)
+without prompting; it defaults to `all`.
+
+### `btd update`
+
+Moves tool pins to the refs curated for the installed btd release, then re-installs anything that
+changed. `--check` prints what would change without applying. Pins never move blindly to `@latest`.
+
+### `btd doctor`
+
+Checks `go`, `git`, `node` (≥20), `goph`, `hachigo`, and goph's prerequisites (`templ`, `air`,
+`goose`). `--install` installs what it can and delegates the rest to `goph doctor --install`.
+
+### `btd list`
+
+Prints installed tools, their resolved versions, and whether they match the manifest pins.
+
+## Manifest
+
+Tool pins live in `~/.config/btd/manifest.json` (global) and `.btd/manifest.json` (project), merged
+project-wins. The project manifest doubles as the "btd project" marker that `install` and `update`
+use to detect context.
+
+## Development
+
+```bash
+go build ./...
+go vet ./...
+go test ./...
+```
 
 ## License
 
